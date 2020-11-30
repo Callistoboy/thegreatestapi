@@ -3,16 +3,17 @@ Rails.application.routes.draw do
   scope module: 'api' do
     namespace :v1 do
       resources :jobs
-      # resources :applies
-      # resources :geeks
+      resources :applies
+      resources :geeks
+      match 'companies/:id/delete_company', to: 'companies#delete_company', via: :put
       resources :companies do
-        match 'mark_deleted', to: 'companies/mark_deleted', via: :put
-        resources :jobs
+        # resources :jobs
       end
     end
   end
 
   match "*path", to: "application#catch_404", via: :all
+
 
 
 end

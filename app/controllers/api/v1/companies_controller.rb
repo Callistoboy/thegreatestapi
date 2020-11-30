@@ -1,9 +1,9 @@
 class Api::V1::CompaniesController < ApplicationController
-  before_action :set_company, only: %i[show update delete_company]
+  before_action :set_company, only: %i[show update]
 
   def index
-    @companies = if params[:company_id]
-                   Company.find(params[:company_id])
+    @companies = if params[:id]
+                   Company.find(params[:id])
                  else
                    Company.all
                  end
@@ -24,6 +24,8 @@ class Api::V1::CompaniesController < ApplicationController
   end
 
   def update
+    p "params = #{params.inspect}"
+    p "@company = #{@company.inspect}"
     if @company.update(company_params)
       render json: @company
     else
@@ -32,7 +34,11 @@ class Api::V1::CompaniesController < ApplicationController
   end
 
   def delete_company
-    self.update(deleted: true)
+    @company = Company.find(params[:id])
+    p "params = #{params.inspect}"
+    p "@company = #{@company.inspect}"
+    @company.update(deleted: true)
+    render json: @company
   end
 
 
